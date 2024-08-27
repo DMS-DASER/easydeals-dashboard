@@ -12,9 +12,6 @@ import { Route, Routes } from 'react-router-dom'
 
 function App() {
   const { isLoaded, isSignedIn } = useAuth();
-
-  const [count, setCount] = useState(0)
-
   return (
     <>
       <Navbar/>
