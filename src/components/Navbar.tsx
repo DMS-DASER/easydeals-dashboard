@@ -4,8 +4,6 @@ import { FiMenu } from "react-icons/fi";
 import { MdClose } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 
-
-
 const Navbar = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -58,7 +56,7 @@ const Navbar = () => {
                         <span className="font-bold text-sm text-slate-500 mx-1">Admin</span>
                     </a>
                     <div className="flex items-center space-x-4">
-                        <a href="/Login" className="hover:text-orange-500 text-black hidden lg:inline">Log out</a>
+                        <a className="hover:text-orange-500 text-black hidden lg:inline" onClick={() => {navigate('/login')}}>Log in</a>
                         <button
                             onClick={toggleDrawer}
                             className={`lg:hidden transition-transform duration-300 ease-in-out ${isDrawerOpen ? 'translate-x-0 z-50  ' : 'translate-x-0 z-20'}`}

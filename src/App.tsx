@@ -5,10 +5,14 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Login from './components/Login'
 import Products from './components/Products'
+import { useAuth } from '@clerk/clerk-react'
+
 import { Route, Routes } from 'react-router-dom'
 
 
 function App() {
+  const { isLoaded, isSignedIn } = useAuth();
+
   const [count, setCount] = useState(0)
 
   return (
@@ -17,7 +21,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Login/>}/>
         <Route path='/login' element={<Login/>}/>
-        <Route path='/products/*' element={<Products/>}/>
+        <Route path='/products/*' element={(isLoaded && isSignedIn) ? <Products/> : <Login/>}/>
       </Routes>
       <Footer/>
     </>
