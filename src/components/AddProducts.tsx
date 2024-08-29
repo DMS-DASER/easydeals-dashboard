@@ -143,7 +143,7 @@ const AddProducts = () => {
                 product_id: formData.productId,
                 product_name: formData.productName,
                 model_no: formData.modelNo,
-                category: formData.category,
+                category: formData.category.toLowerCase(),
                 price: parseFloat(formData.price),
                 easy_deals_plans: formData.edPlans,
                 stock: parseInt(formData.stock),
