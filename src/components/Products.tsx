@@ -3,8 +3,8 @@ import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import AddProducts from "./AddProducts";
 import { useClerk } from "@clerk/clerk-react";
 import AccessDenied from "./AccessDenied";
-
-
+import ViewProducts from "./ViewProducts";
+import UpdateProducts from "./UpdateProducts";
 
 const Products = () => {
     const {signOut} = useClerk();
@@ -35,6 +35,8 @@ const Products = () => {
                     <Route path='/' element={<AddProducts />} />
                     <Route path='/addproducts' element={<AddProducts />} />
                     <Route path='/*' element={<AccessDenied />} />
+                    <Route path='/viewproducts' element={<ViewProducts />} />
+                    <Route path='/editproducts' element={<UpdateProducts/>} />
                 </Routes>
             </div>
 

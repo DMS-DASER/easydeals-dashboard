@@ -13,7 +13,8 @@ const Navbar = () => {
     };
 
     const toggleDropdown = (dropdown: string) => {
-        setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
+        navigate(dropdown);
+        setIsDrawerOpen(false);
     };
 
     const dropdownContent = [
@@ -34,7 +35,6 @@ const Navbar = () => {
 
     return (
         <header className="bg-white text-black w-full">
-            {/* Top Bar */}
             <div className="p-2 items-center justify-between bg-purple-900 w-full hidden lg:flex">
                 <div className='items-center justify-between w-full lg:w-2/3 mx-auto flex'>
                     <div className="flex items-center space-x-4 text-sm">
@@ -47,7 +47,6 @@ const Navbar = () => {
                 </div>
             </div>
 
-            {/* Middle Bar */}
             <div className="py-4 flex items-center justify-between w-full lg:w-2/3 mx-auto px-4">
                 <div className="flex-grow flex items-center justify-center space-x-4 lg:space-x-10">
                     <a href="/" className="flex items-center">
@@ -68,7 +67,6 @@ const Navbar = () => {
                 </div>
             </div>
 
-            {/* Bottom Bar */}
             <nav className="px-4 w-full mx-auto hidden lg:block">
                 <div className="flex space-x-12 justify-center text-sm">
                     {dropdownContent.map((item) => (
@@ -85,11 +83,9 @@ const Navbar = () => {
                 </div>
             </nav>
 
-            {/* Navigation Drawer */}
             {isDrawerOpen && (
                 <div className="lg:hidden fixed inset-0 z-40 bg-black bg-opacity-50" onClick={toggleDrawer}>
-                    <div className={`fixed inset-y-0 left-0 w-64 bg-white p-6 shadow-lg transform transition-transform duration-300 ease-in-out ${activeDropdown ? '-translate-x-32' : ''}`} onClick={(e) => e.stopPropagation()}>
-                        {/* Logo Section */}
+                    <div className={`fixed inset-y-0 left-0 w-64 bg-white p-6 shadow-lg transform`} onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center justify-between mb-6">
                             <div className="flex items-center">
                                 <span className="text-orange-500 font-bold text-2xl">easy</span>
@@ -100,8 +96,8 @@ const Navbar = () => {
                         <nav className="space-y-4 mt-6">
                             <div className="relative">
                                 <button
-                                    className="block w-full py-2 px-4 text-gray-800 bg-gray-100 rounded-md shadow-md hover:bg-orange-500 hover:text-white transition duration-300 ease-in-out flex justify-between"
-                                    onClick={() => toggleDropdown('PRODUCTS')}
+                                    className="w-full py-2 px-4 text-gray-800 bg-gray-100 rounded-md shadow-md hover:bg-orange-500 hover:text-white transition duration-300 ease-in-out flex justify-between"
+                                    onClick={() => toggleDropdown('products')}
                                 >
                                     <span className="font-semibold">PRODUCTS</span>
                                 </button>
@@ -110,7 +106,7 @@ const Navbar = () => {
                             <div className="relative">
                                 <button
                                     className="w-full py-2 px-4 text-gray-800 bg-gray-100 rounded-md shadow-md hover:bg-orange-500 hover:text-white transition duration-300 ease-in-out flex justify-between"
-                                    onClick={() => toggleDropdown('BRANDS')}
+                                    onClick={() => toggleDropdown('orders')}
                                 >
                                     <span className="font-semibold">ORDERS</span>
                                     
@@ -119,8 +115,8 @@ const Navbar = () => {
                             </div>
                             <div className="relative">
                                 <button
-                                    className="block w-full py-2 px-4 text-gray-800 bg-gray-100 rounded-md shadow-md hover:bg-orange-500 hover:text-white transition duration-300 ease-in-out flex justify-between"
-                                    onClick={() => toggleDropdown('ADDED SERVICES')}
+                                    className="w-full py-2 px-4 text-gray-800 bg-gray-100 rounded-md shadow-md hover:bg-orange-500 hover:text-white transition duration-300 ease-in-out flex justify-between"
+                                    onClick={() => toggleDropdown('invoices')}
                                 >
                                     <span className="font-semibold">ADDED SERVICES</span>
                                 </button>

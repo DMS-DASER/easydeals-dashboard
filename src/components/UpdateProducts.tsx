@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, {useState} from "react";
+import { FaSearch } from "react-icons/fa";
 import { createClient } from "@supabase/supabase-js";
-import 'ldrs/ring'
-
-import { cardio } from 'ldrs'
-
-cardio.register()
 
 const REACT_APP_SUPABASE_URL = "https://mtbscjslfmhebsizwcbx.supabase.co"
 const REACT_APP_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10YnNjanNsZm1oZWJzaXp3Y2J4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjMwMDU1MzYsImV4cCI6MjAzODU4MTUzNn0.lHhdyAUUndKRr-kta0M8qsADr28pLqJoE7pXuEPPo-g"
 
 const supabase = createClient(REACT_APP_SUPABASE_URL, REACT_APP_SUPABASE_ANON_KEY);
 
-const AddProducts = () => {
+const UpdateProducts = () => {
     const [images, setImages] = useState<FileList | null>()
     const [formErrors, setFormErrors] = useState<any>({});
+    const [serachby,setsearchby] = useState('');
+    const [productID, setProductID] = useState(null);
     const [formData, setFormData] = useState({
-        productId: "",
         productName: "",
         modelNo: "",
         category: "",
@@ -30,33 +27,51 @@ const AddProducts = () => {
     });
     let imageurls: string[] = [];
 
-    const [loading, setLoading] = useState(false);
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value, type} = e.target;
+        if (type === 'checkbox') {
+            const checked = (e.target as HTMLInputElement).checked;
+            setFormData({
+                ...formData,
+                [name]: checked,
+            });
+        } else {
+            setFormData({
+                ...formData,
+                [name]: value,
+            });
+        }
+    };
 
-    const resetForm = () => {
-        setFormData({
-            productId: "",
-            productName: "",
-            modelNo: "",
-            category: "",
-            description: "",
-            specialdes: "",
-            brand: "",
-            specifications: "",
-            price: "",
-            discount: "",
-            stock: "",
-            edPlans: false
-        });
-        imageurls = [];
-        setImages(null);
+    const insertData = async () => {
+        const { data, error } = await supabase
+            .from('product')
+            .update({
+                product_name: formData.productName,
+                model_no: formData.modelNo,
+                category: formData.category.toLowerCase(),
+                price: parseFloat(formData.price),
+                easy_deals_plans: formData.edPlans,
+                stock: parseInt(formData.stock),
+                description: formData.description,
+                specification: formData.specifications,
+                special_description: formData.specialdes,
+                images: imageurls,
+                discount: parseFloat(formData.discount),
+                brand: formData.brand
+            }).eq('product_id', productID);
+        if (data) {
+            setLoading(false);
+            alert("data inserted");
+            resetForm();
+        } else if (error) {
+            alert(error.message);
+            console.log(error.message);
+        }
     }
 
     const validateForm = () => {
         let errors: any = {};
-
-        if (!formData.productId) {
-            errors.productId = "Product ID is required.";
-        }
 
         if (!formData.productName) {
             errors.productName = "Product Name is required.";
@@ -98,70 +113,22 @@ const AddProducts = () => {
         return Object.keys(errors).length === 0;
     };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value, type} = e.target;
-        if (type === 'checkbox') {
-            const checked = (e.target as HTMLInputElement).checked;
-            setFormData({
-                ...formData,
-                [name]: checked,
-            });
-        } else {
-            setFormData({
-                ...formData,
-                [name]: value,
-            });
-        }
-    };
-
-    const handleImageUpload = async () => {
-        if (images) {
-            const uploadPromises = Array.from(images).map(async (file) => {
-                const { data, error } = await supabase.storage.from('products').upload(`${formData.category}/${formData.brand}/${formData.productId}/${file.name}`, file, {
-                    upsert: true,
-                    contentType: 'image/jpeg',
-                });
-                if (data) {
-                    const { data } = supabase.storage.from('products').getPublicUrl(`${formData.category}/${formData.brand}/${formData.productId}/${file.name}`);
-                    imageurls.push(data.publicUrl);
-                } else if (error) {
-                    console.log(error.message);
-                }
-            });
-            await Promise.all(uploadPromises);
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
-    const insertData = async () => {
-        const { data, error } = await supabase
-            .from('product')
-            .insert({
-                product_id: formData.productId,
-                product_name: formData.productName,
-                model_no: formData.modelNo,
-                category: formData.category.toLowerCase(),
-                price: parseFloat(formData.price),
-                easy_deals_plans: formData.edPlans,
-                stock: parseInt(formData.stock),
-                description: formData.description,
-                specification: formData.specifications,
-                special_description: formData.specialdes,
-                images: imageurls,
-                discount: parseFloat(formData.discount),
-                brand: formData.brand
-            }).select();
-        if (data) {
-            setLoading(false);
-            alert("data inserted");
-            resetForm();
-        } else if (error) {
-            alert(error.message);
-            console.log(error.message);
-        }
+    const resetForm = () => {
+        setFormData({
+            productName: "",
+            modelNo: "",
+            category: "",
+            description: "",
+            specialdes: "",
+            brand: "",
+            specifications: "",
+            price: "",
+            discount: "",
+            stock: "",
+            edPlans: false
+        });
+        imageurls = [];
+        setImages(null);
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -185,24 +152,56 @@ const AddProducts = () => {
         }
     };
 
+    const handleImageUpload = async () => {
+        if (images) {
+            const uploadPromises = Array.from(images).map(async (file, index) => {
+                const { data, error } = await supabase.storage.from('products').upload(`${formData.category}/${formData.brand}/${productID}/${file.name}`, file, {
+                    upsert: true,
+                    contentType: 'image/jpeg',
+                });
+                if (data) {
+                    const { data } = supabase.storage.from('products').getPublicUrl(`${formData.category}/${formData.brand}/${productID}/${file.name}`);
+                    imageurls.push(data.publicUrl);
+                } else if (error) {
+                    console.log(error.message);
+                }
+            });
+            await Promise.all(uploadPromises);
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    const [loading, setLoading] = useState(false);
     return (
         <>
-            <div className="w-full flex p-5 bg-slate-100">
+            <div className="flex flex-col gap-4 w-full p-5 bg-slate-100">
+
+                <div className="bg-white h-fit shadow-md rounded-lg w-full p-4 md:flex block">
+                    <div className="w-full p-2 block sm:flex gap-1">
+                        <input
+                            type="text"
+                            name="search"
+                            placeholder="search"
+                            className="w-full p-1 border rounded-md dark:border-gray-300 dark:bg-gray-50 text-sm dark:text-gray-800 focus:border-purple-600"
+                        />
+                        <select defaultValue={'search by'} className="w-full sm:w-1/4 2xl:1/5 p-1 border rounded-md dark:border-gray-300 dark:bg-gray-50 text-sm dark:text-gray-800 focus:border-purple-600">
+                            <option value="productid">product id</option>
+                        </select>
+                        <button
+                            className="w-fit flex items-center justify-between gap-2 px-2 py-1 border rounded-md text-white bg-purple-600 text-sm focus:border-purple-600"
+                        >
+                            Search
+                            <FaSearch />
+                        </button>
+                    </div>
+                </div>
+
                 <div className="bg-white h-fit shadow-md rounded-lg w-full p-4 md:flex block">
                     <form onSubmit={handleSubmit} className="w-full sm:flex block" name="addProductForm">
                         <div className="space-y-4 w-full md:max-w-1/2 border-0 sm:border-r-slate-400 sm:border-r-2 p-2">
-                            <div className="space-y-2">
-                                <label htmlFor="productId" className="block text-sm font-semibold text-gray-600 dark:text-gray-800">Product Id</label>
-                                <input
-                                    type="text"
-                                    name="productId"
-                                    placeholder="product id"
-                                    value={formData.productId}
-                                    onChange={handleInputChange}
-                                    className="w-full p-1 border rounded-md dark:border-gray-300 dark:bg-gray-50 text-sm dark:text-gray-800 focus:border-purple-600"
-                                />
-                                {formErrors.productId && <span className="text-red-500 text-xs">{formErrors.productId}</span>}
-                            </div>
                             <div className="space-y-2">
                                 <label htmlFor="productName" className="block text-sm font-semibold text-gray-600 dark:text-gray-800">Product Name</label>
                                 <input
@@ -370,11 +369,11 @@ const AddProducts = () => {
                                 >
                                     {loading ?
                                         <l-cardio
-                                        size="32"
-                                        stroke="4"
-                                        speed="2" 
-                                        color="white" 
-                                      ></l-cardio> : 'Submit'}
+                                            size="32"
+                                            stroke="4"
+                                            speed="2"
+                                            color="white"
+                                        ></l-cardio> : 'Submit'}
                                 </button>
                             </div>
 
@@ -383,9 +382,9 @@ const AddProducts = () => {
                     </form>
                 </div>
 
-            </div>
+            </div >
         </>
     );
 }
 
-export default AddProducts;
+export default UpdateProducts;
