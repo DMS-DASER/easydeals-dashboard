@@ -4,7 +4,9 @@ import viteLogo from '/vite.svg'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Login from './components/Login'
+import ViewOrders from './components/ViewOrders'
 import Products from './components/Products'
+import InvoicePage from './components/InvoicePage'
 import { useAuth } from '@clerk/clerk-react'
 
 import { Route, Routes } from 'react-router-dom'
@@ -19,6 +21,8 @@ function App() {
         <Route path='/' element={<Login/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/products/*' element={(isLoaded && isSignedIn) ? <Products/> : <Login/>}/>
+        <Route path='/invoice/:id' element={(isLoaded && isSignedIn) ? <InvoicePage/> : <Login/>}/>
+        <Route path='/orders/*' element={(isLoaded && isSignedIn) ? <ViewOrders/> : <Login/>}/>
       </Routes>
       <Footer/>
     </>

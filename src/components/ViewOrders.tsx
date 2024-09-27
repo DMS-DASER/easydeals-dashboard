@@ -112,7 +112,7 @@ const REACT_APP_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3
 
 const supabase = createClient(REACT_APP_SUPABASE_URL, REACT_APP_SUPABASE_ANON_KEY);
 
-const ViewProducts = () => {
+const ViewOrders = () => {
     const [current, setcurrent] = useState(2);
     const [last, setLast] = useState(3);
     return (
@@ -196,4 +196,4 @@ const ViewProducts = () => {
     );
 }
 
-export default ViewProducts;
+export default ViewOrders;

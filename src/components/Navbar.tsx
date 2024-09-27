@@ -18,7 +18,7 @@ const Navbar = () => {
     };
 
     const dropdownContent = [
-        'products', 'orders', 'invoices'
+        'products', 'orders', 'invoices', 'brands', 'offers'
     ]
     
     useEffect(() => {

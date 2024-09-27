@@ -3,7 +3,8 @@ import AssetLogo from "../assets/images/AssetLogo.png";
 
 const InvoicePage = () => {
   return (
-    <div className="p-4 bg-white md:p-12">
+    <div className='w-full flex justify-center items-center p-6'>
+    <div className="p-4 bg-white md:p-12 w-full xl:w-4/6 rounded-md shadow-xl">
       <div className="flex flex-col items-start justify-between pb-4 mb-6 border-b border-gray-300 md:flex-row">
         <div className="mb-4 md:mb-0">
           <img src={AssetLogo} alt="Logo" className="w-auto h-auto max-w-full" />
@@ -82,10 +83,11 @@ const InvoicePage = () => {
 
       <div className='flex flex-col items-center justify-between mt-20 md:flex-row md:mt-40'>
         <p className="mb-4 text-sm text-center md:mb-0">This is an online generated invoice.</p>
-        <button className="flex items-center justify-center px-8 py-1 text-white bg-[#45145a] w-full md:w-auto">
+        <button className="flex items-center justify-center px-8 py-1 text-white rounded-md bg-[#45145a] w-full md:w-auto">
           Print
         </button>
       </div>
+    </div>
     </div>
   );
 };
