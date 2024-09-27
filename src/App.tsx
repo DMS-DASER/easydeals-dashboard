@@ -7,6 +7,7 @@ import Login from './components/Login'
 import ViewOrders from './components/ViewOrders'
 import Products from './components/Products'
 import InvoicePage from './components/InvoicePage'
+import Brand from './components/Brand'
 import { useAuth } from '@clerk/clerk-react'
 
 import { Route, Routes } from 'react-router-dom'
@@ -23,6 +24,7 @@ function App() {
         <Route path='/products/*' element={(isLoaded && isSignedIn) ? <Products/> : <Login/>}/>
         <Route path='/invoice/:id' element={(isLoaded && isSignedIn) ? <InvoicePage/> : <Login/>}/>
         <Route path='/orders/*' element={(isLoaded && isSignedIn) ? <ViewOrders/> : <Login/>}/>
+        <Route path='/brands/*' element={(isLoaded && isSignedIn) ? <Brand/> : <Login/>}/>
       </Routes>
       <Footer/>
     </>

@@ -126,8 +126,8 @@ const Brand = () => {
         <>
             <div className="w-full flex p-5 bg-slate-100">
                 <div className="bg-white h-fit shadow-md rounded-lg w-full p-4 md:flex block">
-                    <form onSubmit={handleSubmit} className="w-full sm:flex block" name="addProductForm">
-                        <div className="space-y-4 w-full md:max-w-1/2 border-0 sm:border-r-slate-400 sm:border-r-2 p-2">        
+                    <form onSubmit={handleSubmit} className="w-full" name="addProductForm">
+                        <div className="space-y-4 w-full border-0  sm:border-r-2 p-2">        
                             <div className="space-y-2">
                                 <label htmlFor="brandName" className="block text-sm font-semibold text-gray-600 dark:text-gray-800">Product Name</label>
                                 <input
