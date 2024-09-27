@@ -115,7 +115,7 @@ const Brand = () => {
         }
     };
 
-    const handleImageRendering = (i: number) => {
+    const handleImageRendering = () => {
         if (images) {
             const urls = URL.createObjectURL(images);
             return <img src={urls} />
@@ -132,8 +132,8 @@ const Brand = () => {
                                 <label htmlFor="brandName" className="block text-sm font-semibold text-gray-600 dark:text-gray-800">Product Name</label>
                                 <input
                                     type="text"
-                                    name="productName"
-                                    placeholder="product name"
+                                    name="brandName"
+                                    placeholder="Brand Name"
                                     value={formData.brandName}
                                     onChange={handleInputChange}
                                     className="w-full p-1 border rounded-md dark:border-gray-300 dark:bg-gray-50 text-sm dark:text-gray-800 focus:border-purple-600"
@@ -151,20 +151,20 @@ const Brand = () => {
                                             setImages(e.target.files[0])
                                         }}
                                     />
-                                    {[0, 1, 2, 3, 4].map((index) =>
-                                        <div key={index} className="">
+                                
+                                        <div  className="">
                                             <label
                                                 htmlFor={`files`}
                                                 className="flex cursor-pointer"
                                             >
                                                 <div className="bg-gray-200 rounded-lg p-4 text-center sm:w-24 sm:h-24 w-12 h-12 flex justify-center items-center overflow-hidden relative">
                                                     <span className="text-gray-500 font-semibold text-xs">
-                                                        {handleImageRendering(index)}
+                                                        {handleImageRendering()}
                                                     </span>
                                                 </div>
                                             </label>
-                                        </div>)
-                                    }
+                                        </div>
+                                    
                                 </div>
                                 {formErrors.images && <span className="text-red-500 text-xs">{formErrors.images}</span>}
                             </div>
